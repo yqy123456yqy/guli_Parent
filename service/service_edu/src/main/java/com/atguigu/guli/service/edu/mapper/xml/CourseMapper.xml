@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.guli.service.edu.mapper.CourseMapper">
+    <sql id="columns">
+c.id,
+c.title,
+t.name as teacherName,
+c.lesson_num as lessonNum,
+c.price,
+c.cover,
+c.buy_count as buyCount,
+c.view_count as viewCount,
+c.`status`,
+c.gmt_create as gmtCreate,
+s.title as subjectTitle,
+s2.title as subjectParentTitle
+    </sql>
+    <sql id="tables">
+edu_course c
+join edu_teacher t
+on t.id = c.teacher_id
+join edu_subject s
+on s.id = c.subject_id
+join edu_subject s2
+on s2.id = c.subject_parent_id
+    </sql>
+    <select id="selectPageByCourseQueryVo" resultType="com.atguigu.guli.service.edu.entity.vo.CourseVo">
+
+        select
+        <include refid="columns"/>
+
+        from
+        <include refid="tables"/>
+        ${ew.customSqlSegment}
+    </select>
+    <select id="selectCoursePublishVoById" resultType="com.atguigu.guli.service.edu.entity.vo.CoursePublishVo">
+
+select
+c.id,
+c.title,
+t.name as teacherName,
+c.lesson_num as lessonNum,
+c.price,
+c.cover,
+s.title as subjectTitle,
+s2.title as subjectParentTitle
+
+
+  from
+edu_course c
+join edu_teacher t
+on t.id = c.teacher_id
+join edu_subject s
+on s.id = c.subject_id
+join edu_subject s2
+on s2.id = c.subject_parent_id
+where c.id = #{id}
+    </select>
+
+
+    <select id="selectWebCourseVo" resultType="com.atguigu.guli.service.edu.entity.vo.WebCourseVo">
+        select
+        c.id,
+        c.title,
+        c.price,
+        c.lesson_num as lessonNum,
+        c.cover,
+        c.buy_count as buyCount,
+        c.view_count as viewCount,
+        d.description as description,
+        t.id as teacherId,
+        t.`name` as teacherName,
+        t.intro,t.avatar,
+        s1.id as subjectLevelTwoId,
+        s1.title as subjectLevelTwo,
+        s2.id as subjectLevelOneId,
+        s2.title as subjectLevelOne
+        FROM edu_course c
+        join edu_course_description d
+        on d.id = c.id
+        join edu_teacher t
+        on t.id = c.teacher_id
+        join edu_subject s1
+        on s1.id = c.subject_id
+        join edu_subject s2
+        on s2.id = c.subject_parent_id
+        where c.id = #{id}
+    </select>
+
+    <select id="selectCourseDto" resultType="com.atguigu.guli.service.base.dto.CourseDto">
+        select
+        c.id,
+        c.title,
+        c.price,
+        c.cover,
+        t.`name` as teacherName
+        from edu_course c
+        join edu_teacher t
+        on c.teacher_id = t.id
+        where c.id = #{id}
+
+    </select>
+</mapper>

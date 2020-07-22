@@ -1,0 +1,22 @@
+server:
+  port: 8120
+
+spring:
+  application:
+    name: service-oss
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+
+
+aliyun:
+  oss:
+    endpoint: oss-cn-shanghai.aliyuncs.com
+    keyid: LTAI4Fy9fneCptw3iEHYjb6Z
+    keysecret: Hz8zLhm4s1ThrFlCSKeA57Wz3Lp2Ig
+    #bucket可以在控制台创建，也可以使用java代码创建，注意先测试bucket是否已被占用
+    bucketname: guli-filess-1
